@@ -17,12 +17,12 @@ namespace DBAccess
     {
         private Microsoft.Practices.EnterpriseLibrary.Data.Database _db;
 
-        protected void initialize()
+        protected void Initialize()
         {
-             _db = DatabaseFactory.CreateDatabase();
+            _db = DatabaseFactory.CreateDatabase();
         }
 
-        protected void initialize(string connectionStringName)
+        protected void Initialize(string connectionStringName)
         {
             _db = DatabaseFactory.CreateDatabase(connectionStringName);
         }
@@ -33,7 +33,7 @@ namespace DBAccess
             {
                 return _db.ExecuteReader(command);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -44,7 +44,7 @@ namespace DBAccess
 
             return _db.ExecuteNonQuery(command);
         }
-        
-        
+
+
     }
 }

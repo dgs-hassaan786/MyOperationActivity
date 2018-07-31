@@ -14,9 +14,9 @@ namespace DBAccess
             DataTable dt = new DataTable();
             dt.TableName = "BookDetails";
 
-            dt.Columns.Add("BookID"     , typeof(Int32));
-            dt.Columns.Add("Title"      , typeof(String));
-            dt.Columns.Add("ISBN"       , typeof(String));
+            dt.Columns.Add("BookID", typeof(Int32));
+            dt.Columns.Add("Title", typeof(String));
+            dt.Columns.Add("ISBN", typeof(String));
             dt.Columns.Add("PublishYear", typeof(String));
             dt.Columns.Add("CoverPrice", typeof(Decimal));
             dt.Columns.Add("CheckOutStatusDescription", typeof(String));
@@ -26,6 +26,6 @@ namespace DBAccess
             return dt;
         }
 
-       
+
     }
 }
