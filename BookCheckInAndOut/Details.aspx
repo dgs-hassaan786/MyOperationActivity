@@ -1,7 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="CheckOut.aspx.cs" Inherits="BookCheckInAndOut.CheckOut" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Details.aspx.cs" Inherits="BookCheckInAndOut.Details" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style type="text/css">
+     <style type="text/css">
         .auto-style2 {
             width: 150px;
         }
@@ -41,61 +40,47 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <link href="Styles/StyleSheet.css" rel="stylesheet" type="text/css" />
-    <asp:HiddenField ID="hdnField" runat="server" ClientIDMode="Static" />
     <table id="contentTable" border="0">
 
         <tr>
-            <td class="text2">Name:</td>
+            <td class="text2">Book Title:</td>
             <td class="auto-style2">
-                <asp:TextBox CssClass="textbox" ID="txtName" runat="server" />
-                <asp:RequiredFieldValidator ID="RFDtxtName" CssClass="Errortext" ControlToValidate="txtName" runat="server" ErrorMessage="Name is a required field"></asp:RequiredFieldValidator>
+                <asp:Label CssClass="text" ID="lblBookTitle" runat="server" />                
             </td>
         </tr>
 
         <tr>
-            <td class="text2">Mobile Number:</td>
+            <td class="text2">ISBN:</td>
             <td class="auto-style2">
-                <asp:TextBox ID="txtMobile" CssClass="textbox" runat="server" />
-                <asp:RegularExpressionValidator CssClass="Errortext" Display="Dynamic" ID="ReMobileNumber" runat="server" ErrorMessage="Mobile Number should be xx-xxx xxxx"
-                    ControlToValidate="txtMobile" ValidationExpression="((\d{2}-?)|(\d{3}))?\d{3} \d{4}"></asp:RegularExpressionValidator>
-                <asp:RequiredFieldValidator Display="Dynamic" ID="RFDMobile" CssClass="Errortext" runat="server" ControlToValidate="txtMobile" ErrorMessage="Mobile Number is a required field"></asp:RequiredFieldValidator>
+                <asp:Label CssClass="text" ID="lblISBN" runat="server" />                
             </td>
         </tr>
 
         <tr>
-            <td class="text2">National ID:</td>
-
+            <td class="text2">Publish Year:</td>
             <td class="auto-style2">
-                <asp:TextBox CssClass="textbox" ID="txtNationalID" runat="server" />
-                <asp:RegularExpressionValidator CssClass="Errortext" Display="Dynamic" ID="ReNationalID" runat="server" ErrorMessage="ID must be 11 digits"
-                    ControlToValidate="txtNationalID" ValidationExpression="[0-9]{11}$"></asp:RegularExpressionValidator>
-                <asp:RequiredFieldValidator Display="Dynamic" CssClass="Errortext" ID="RFDNationalID" runat="server" ControlToValidate="txtNationalID" ErrorMessage="National ID is a required field"></asp:RequiredFieldValidator>
-
+                <asp:Label CssClass="text" ID="lblPublishYear" runat="server" />  
             </td>
         </tr>
 
         <tr>
-            <td class="text2">Check Out Date:</td>
+            <td class="text2">Cover Price</td>
             <td class="auto-style5">
-                <asp:Label CssClass="text" ID="lblCheckOutDate" runat="server" /></td>
+                <asp:Label CssClass="text" ID="lblPrice" runat="server" /> 
+            </td>
         </tr>
 
         <tr>
-            <td class="text2">Return Date:</td>
+            <td class="text2">Status</td>
             <td class="auto-style7">
-                <asp:Label CssClass="text" ID="lblReturnDate" runat="server" /></td>
+                <asp:Label CssClass="text" ID="lblStatus" runat="server" />
+            </td>
         </tr>
 
         <tr>
             <td class="auto-style3"></td>
             <td class="auto-style3"></td>
-        </tr>
-
-        <tr>
-            <td></td>
-            <td style="text-align: right" class="auto-style2">
-                <asp:Button ID="btnCheckOut" Text="Check Out" CssClass="button" runat="server" OnClick="BtnCheckOut_Click" /></td>
-        </tr>
+        </tr>        
 
         <tr>
             <td class="text2" colspan="2">Book Check Out History</td>

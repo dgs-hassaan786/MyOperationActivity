@@ -10,51 +10,60 @@
 namespace BookCheckInAndOut {
     
     
-    public partial class HomePage {
+    public partial class Details {
         
         /// <summary>
-        /// BooksList control.
+        /// lblBookTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView BooksList;
+        protected global::System.Web.UI.WebControls.Label lblBookTitle;
         
         /// <summary>
-        /// btnDetails control.
+        /// lblISBN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDetails;
+        protected global::System.Web.UI.WebControls.Label lblISBN;
         
         /// <summary>
-        /// btnCheckOut control.
+        /// lblPublishYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCheckOut;
+        protected global::System.Web.UI.WebControls.Label lblPublishYear;
         
         /// <summary>
-        /// btnCheckIn control.
+        /// lblPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCheckIn;
+        protected global::System.Web.UI.WebControls.Label lblPrice;
         
         /// <summary>
-        /// hdnField control.
+        /// lblStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnField;
+        protected global::System.Web.UI.WebControls.Label lblStatus;
+        
+        /// <summary>
+        /// HistoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListView HistoryList;
     }
 }

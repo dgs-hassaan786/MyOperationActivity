@@ -19,9 +19,8 @@ namespace BusinessLogic
 
             IDataReader reader = db.RetrieveBooksList();
 
-            DataTable dt = SchemaInfo.CreateBookDetailsSchemaTable();
+            //DataTable dt = SchemaInfo.CreateBookDetailsSchemaTable();
 
-            
             if (reader != null)
             {
                 books = new List<Book>();
@@ -37,14 +36,50 @@ namespace BusinessLogic
                         ISBN = (string)reader["ISBN"],
                         PublishYear = (string)reader["PublishYear"],
                         CoverPrice = (decimal)reader["CoverPrice"],
+                        ModifiedOn = (DateTime)reader["ModifiedOn"],
                         CheckOutStatusDescription = (string)reader["CheckOutStatusDescription"]
                     });
                 }
             }
-              
+
 
 
             return books;
+        }
+
+
+        public Book RetrieveBookDetails(int bookId)
+        {
+            Book book = null;
+
+            BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
+
+            IDataReader reader = db.RetrieveBooksList(bookId);
+
+            //DataTable dt = SchemaInfo.CreateBookDetailsSchemaTable();
+
+
+            if (reader != null)
+            {
+
+                while (reader.Read())
+                {
+
+
+                    book = new Book
+                    {
+                        BookID = (int)reader["BookID"],
+                        Title = (string)reader["Title"],
+                        ISBN = (string)reader["ISBN"],
+                        PublishYear = (string)reader["PublishYear"],
+                        CoverPrice = (decimal)reader["CoverPrice"],
+                        ModifiedOn = (DateTime)reader["ModifiedOn"],
+                        CheckOutStatusDescription = (string)reader["CheckOutStatusDescription"]
+                    };
+                }
+            }
+
+            return book;
         }
 
         public List<Borrower> RetrieveBookCheckOutHistory(int BookID)
@@ -69,7 +104,7 @@ namespace BusinessLogic
                 }
             }
 
-            return borrowers; 
+            return borrowers;
         }
 
         public Borrower RetrieveBookBorrowerDetails(int BookID)
@@ -87,23 +122,27 @@ namespace BusinessLogic
                     borrower.Name = (string)reader["Name"];
                     borrower.MobileNo = (string)reader["Mobile"];
                     borrower.ReturnDate = (DateTime)reader["ReturnDate"];
+                    borrower.Book = new Book()
+                    {
+                        ModifiedOn = (DateTime)reader["ModifiedOn"]
+                    };
                 }
 
             return borrower;
         }
 
-        public int CheckIn(int bookID)
-        {
-           BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
-
-           return  db.CheckIn(bookID);
-        }
-
-        public int CheckOut(int bookID, string Name, string MobileNo, string NationalID, DateTime checkOutDate, DateTime ReturnDate)
+        public int CheckIn(int bookID, DateTime modifiedOn)
         {
             BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
 
-            return db.CheckOut(bookID, Name, MobileNo, NationalID, checkOutDate, ReturnDate);
+            return db.CheckIn(bookID, modifiedOn);
+        }
+
+        public int CheckOut(int bookID, string Name, string MobileNo, string NationalID, DateTime checkOutDate, DateTime ReturnDate, DateTime lastModifiedOn)
+        {
+            BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
+
+            return db.CheckOut(bookID, Name, MobileNo, NationalID, checkOutDate, ReturnDate, lastModifiedOn);
         }
     }
 }

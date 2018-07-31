@@ -15,31 +15,42 @@ namespace BookCheckInAndOut.Utilities
         /// </summary>
         /// <param name="days">Business days</param>
         /// <returns>Target Date</returns>
-        public static DateTime getDateAfterSpecifiedBusinessDays(int days)
+        public static DateTime GetDateAfterSpecifiedBusinessDays(int days)
         {
-            DateTime TargetDate = DateTime.Now.AddDays(15);
+            var startDay = DateTime.Now;
+            var businessDaysCount = 0;
+            var requiredTotalDays = 0;
+            while (businessDaysCount < days)
+            {
+                if (startDay.DayOfWeek != DayOfWeek.Friday && startDay.DayOfWeek != DayOfWeek.Saturday)
+                {
+                    businessDaysCount++;
+                }
+                requiredTotalDays++;
+                if (businessDaysCount != days) startDay = startDay.AddDays(1);
+            }
 
-            return TargetDate;
+            return startDay;
         }
 
-        public static void setPageMessage(string message, severity level, System.Web.UI.MasterPage master)
+
+        public static void SetPageMessage(string message, Severity level, System.Web.UI.MasterPage master)
         {
-            Label messageLabel = (Label) master.FindControl("lblMessage");
+            Label messageLabel = (Label)master.FindControl("lblMessage");
             messageLabel.Text = message;
 
-            if (level == severity.error)
+            if (level == Severity.Error)
                 messageLabel.ForeColor = System.Drawing.Color.Red;
             else
                 messageLabel.ForeColor = System.Drawing.Color.Green;
         }
 
 
-        public  enum severity
-            {
-                info,
-                error
-            
-            }
+        public enum Severity
+        {
+            Info,
+            Error
+        }
     }
 
 

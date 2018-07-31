@@ -16,5 +16,6 @@ namespace BusinessLogic
         public string CheckOutStatusDescription { get; set; }
         public string Image { get; set; }
         public string CurrentBorrowerID { get; set; }
+        public DateTime ModifiedOn { get; set; }
     }
 }

@@ -17,6 +17,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+   <asp:HiddenField ID="hdnField" runat="server" ClientIDMode="Static" />
     <table id ="tblContent">
     <tr>
         <td class="text2">Borrower Name:</td> <td class="auto-style4"><asp:Label class="text" ID ="lblName" runat="server" /></td>
@@ -39,7 +40,7 @@
         </tr>
 
         <tr>
-        <td class="auto-style3"></td> <td class="auto-style4" style="text-align:right"><asp:Button ID="btnCheckIn" CssClass="button" Text="Check ln" runat="server" OnClick="btnCheckIn_Click" /></td>
+        <td class="auto-style3"></td> <td class="auto-style4" style="text-align:right"><asp:Button ID="btnCheckIn" CssClass="button" Text="Check ln" runat="server" OnClick="BtnCheckIn_Click" /></td>
         </tr>
 
      </table>
