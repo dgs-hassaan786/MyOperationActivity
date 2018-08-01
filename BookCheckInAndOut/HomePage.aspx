@@ -21,8 +21,8 @@
             <td class="RadioButtonColumn">Select </td>
             <td class="GridHeading">Title </td>
             <td class="GridHeading">ISBN  </td>
-            <td class="GridHeading">PublishYear </td>
-            <td class="GridHeading">CoverPrice </td>
+            <td class="GridHeading">Publish Year </td>
+            <td class="GridHeading">Cover Price </td>
             <td class="GridHeading">Status </td>
         </tr>
 

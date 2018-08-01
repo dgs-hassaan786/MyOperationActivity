@@ -64,14 +64,14 @@
         </tr>
 
         <tr>
-            <td class="text2">Cover Price</td>
+            <td class="text2">Cover Price:</td>
             <td class="auto-style5">
                 <asp:Label CssClass="text" ID="lblPrice" runat="server" /> 
             </td>
         </tr>
 
         <tr>
-            <td class="text2">Status</td>
+            <td class="text2">Status:</td>
             <td class="auto-style7">
                 <asp:Label CssClass="text" ID="lblStatus" runat="server" />
             </td>
