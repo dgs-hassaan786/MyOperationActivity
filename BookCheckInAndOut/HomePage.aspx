@@ -19,7 +19,7 @@
 
             <td style="width: 0px"></td>
             <td class="RadioButtonColumn">Select </td>
-            <td class="GridHeading">Title </td>
+            <td class="GridHeading">Book Title </td>
             <td class="GridHeading">ISBN  </td>
             <td class="GridHeading">Publish Year </td>
             <td class="GridHeading">Cover Price </td>
@@ -57,10 +57,10 @@
                 <asp:Button ID="btnDetails" CssClass="button" ClientIDMode="Static" runat="server" Text="Details" OnClick="BtnDetails_Click" />
             </td>
             <td style="text-align: right">
-                <asp:Button ID="btnCheckOut" CssClass="button" ClientIDMode="Static" runat="server" Text="Check Out" OnClick="BtnCheckOut_Click" />
+                <asp:Button ID="btnCheckOut" CssClass="button" ClientIDMode="Static" runat="server" Text="Check-out" OnClick="BtnCheckOut_Click" />
             </td>
             <td style="text-align: right">
-                <asp:Button ID="btnCheckIn" CssClass="button" ClientIDMode="Static" runat="server" Text="Check In" OnClick="BtnCheckIn_Click" />
+                <asp:Button ID="btnCheckIn" CssClass="button" ClientIDMode="Static" runat="server" Text="Check-in" OnClick="BtnCheckIn_Click" />
             </td>
 
         </tr>
