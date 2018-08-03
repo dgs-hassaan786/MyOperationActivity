@@ -68,11 +68,7 @@ namespace DBAccess
 
                 command.Parameters.AddWithValue("@BookID", bookId);
                 reader = base.ExecuteReader(command);
-            }
-            catch (System.Data.SqlClient.SqlException ex)
-            {
-                throw new Exception("Oops! Something went wrong.");
-            }
+            }           
             catch (Exception ex)
             {
 
@@ -125,7 +121,6 @@ namespace DBAccess
 
         }
 
-
         public IDataReader RetrieveBookBorrowerDetails(int bookID)
         {
             IDataReader reader = null;
@@ -159,8 +154,7 @@ namespace DBAccess
 
         }
 
-
-        public int CheckIn(int bookID, DateTime modifiedOn)
+        public int CheckIn(int bookId, DateTime modifiedOn)
         {
             SqlCommand command = new SqlCommand();
             int result = 0;
@@ -170,7 +164,7 @@ namespace DBAccess
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = Constants.SP_CheckIn;
 
-                command.Parameters.AddWithValue("@BookID", bookID);
+                command.Parameters.AddWithValue("@BookID", bookId);
                 command.Parameters.AddWithValue("@UTCDatetime", modifiedOn);
 
                 //Add the output parameter to the command object
@@ -190,7 +184,7 @@ namespace DBAccess
             {
                 var o = new
                 {
-                    bookID,
+                    bookId,
                     modifiedOn
                 };
                 //Do logging..
@@ -205,8 +199,7 @@ namespace DBAccess
 
         }
 
-
-        public int CheckOut(int bookID, string name, string mobileNo, string nationalID, DateTime checkOutDate, DateTime returnDate, DateTime lastModifiedOn)
+        public int CheckOut(int bookId, string name, string mobileNo, string nationalId, DateTime checkOutDate, DateTime returnDate, DateTime lastModifiedOn)
         {
             SqlCommand command = new SqlCommand();
             int result = 0;
@@ -216,10 +209,10 @@ namespace DBAccess
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = Constants.SP_CheckOut;
 
-                command.Parameters.AddWithValue("@BookID", bookID);
+                command.Parameters.AddWithValue("@BookID", bookId);
                 command.Parameters.AddWithValue("@Name", name);
                 command.Parameters.AddWithValue("@MobileNo", mobileNo);
-                command.Parameters.AddWithValue("@NationalID", nationalID);
+                command.Parameters.AddWithValue("@NationalID", nationalId);
                 command.Parameters.AddWithValue("@CheckOutDate", checkOutDate);
                 command.Parameters.AddWithValue("@ReturnDate", returnDate);
                 command.Parameters.AddWithValue("@UTCDatetime", lastModifiedOn);
@@ -242,10 +235,10 @@ namespace DBAccess
                 //Do logging..
                 var o = new
                 {
-                    bookID,
+                    bookId,
                     name,
                     mobileNo,
-                    nationalID,
+                    nationalId,
                     checkOutDate,
                     returnDate,
                     lastModifiedOn
@@ -260,7 +253,6 @@ namespace DBAccess
             }
 
         }
-
 
         public int LogException(string message, string rawException, string methodName, string paramVal)
         {
@@ -282,9 +274,9 @@ namespace DBAccess
                 return result;
 
             }
-            catch (Exception ex)
+            catch 
             {
-
+                
             }
             finally
             {
@@ -294,8 +286,6 @@ namespace DBAccess
             return result;
 
         }
-
-
 
         //singleton implementation.
         private BookCheckInCheckOutDBOperations()

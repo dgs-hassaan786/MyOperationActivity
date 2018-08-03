@@ -77,6 +77,14 @@
             </td>
         </tr>
 
+          <tr>
+            <td class="text2">Current Borrower:</td>
+            <td class="auto-style7">
+                <asp:Label CssClass="text" ID="lblCurrentBorrower" runat="server" />
+            </td>
+        </tr>
+
+
         <tr>
             <td class="auto-style3"></td>
             <td class="auto-style3"></td>

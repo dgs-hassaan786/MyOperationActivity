@@ -54,10 +54,7 @@ namespace BusinessLogic
 
             BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
 
-            IDataReader reader = db.RetrieveBooksList(bookId);
-
-            //DataTable dt = SchemaInfo.CreateBookDetailsSchemaTable();
-
+            IDataReader reader = db.RetrieveBooksList(bookId);            
 
             if (reader != null)
             {
@@ -82,12 +79,12 @@ namespace BusinessLogic
             return book;
         }
 
-        public List<Borrower> RetrieveBookCheckOutHistory(int BookID)
+        public List<Borrower> RetrieveBookCheckOutHistory(int bookId)
         {
             List<Borrower> borrowers = null;
             BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
 
-            IDataReader reader = db.RetrieveBookCheckOutHistory(BookID);
+            IDataReader reader = db.RetrieveBookCheckOutHistory(bookId);
 
             if (reader != null)
             {
@@ -107,13 +104,13 @@ namespace BusinessLogic
             return borrowers;
         }
 
-        public Borrower RetrieveBookBorrowerDetails(int BookID)
+        public Borrower RetrieveBookBorrowerDetails(int bookId)
         {
             Borrower borrower = null;
 
             BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
 
-            IDataReader reader = db.RetrieveBookBorrowerDetails(BookID);
+            IDataReader reader = db.RetrieveBookBorrowerDetails(bookId);
 
             if (reader != null)
                 if (reader.Read())
@@ -131,11 +128,11 @@ namespace BusinessLogic
             return borrower;
         }
 
-        public int CheckIn(int bookID, DateTime modifiedOn)
+        public int CheckIn(int bookId, DateTime modifiedOn)
         {
             BookCheckInCheckOutDBOperations db = BookCheckInCheckOutDBOperations.getInstance();
 
-            return db.CheckIn(bookID, modifiedOn);
+            return db.CheckIn(bookId, modifiedOn);
         }
 
         public int CheckOut(int bookID, string Name, string MobileNo, string NationalID, DateTime checkOutDate, DateTime ReturnDate, DateTime lastModifiedOn)

@@ -8,6 +8,7 @@ using BusinessLogic;
 using System.Data;
 using System.Windows.Media.Imaging;
 using System.Threading;
+using Foundation.Shared.Utilities;
 
 namespace BookCheckInAndOut
 {
@@ -17,10 +18,11 @@ namespace BookCheckInAndOut
         {
             if (!Page.IsPostBack)
             {
+                btnCheckIn.Enabled = false;
+                btnCheckOut.Enabled = false;
+                btnDetails.Enabled = false;
                 DisplayBooks();
             }
-
-
         }
 
         protected void BtnCheckOut_Click(object sender, EventArgs e)
@@ -29,45 +31,61 @@ namespace BookCheckInAndOut
             {
                 if (String.IsNullOrWhiteSpace(hdnField.Value))
                 {
-                    Utilities.Utilities.SetPageMessage("Please select the book first.", Utilities.Utilities.Severity.Error, Page.Master);
+                    Utilities.Instance.SetPageMessage("Please select the book first.", Utilities.Severity.Error, Page.Master);
                     return;
                 }
 
                 Response.Redirect("CheckOut.aspx?bookID=" + int.Parse(hdnField.Value));
             }
-            catch (ThreadAbortException ex)
+            catch (Exception ex)
             {
-
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
             }
         }
 
         protected void BtnCheckIn_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(hdnField.Value))
+            try
             {
-                Utilities.Utilities.SetPageMessage("Please select the book first.", Utilities.Utilities.Severity.Error, Page.Master);
-                return;
-            }
+                if (String.IsNullOrWhiteSpace(hdnField.Value))
+                {
+                    Utilities.Instance.SetPageMessage("Please select the book first.", Utilities.Severity.Error, Page.Master);
+                    return;
+                }
 
-            Response.Redirect("CheckIn.aspx?bookID=" + int.Parse(hdnField.Value));
+                Response.Redirect("CheckIn.aspx?bookID=" + int.Parse(hdnField.Value));
+            }
+            catch (Exception ex)
+            {
+
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
+            }
+            
         }
 
         protected void BtnDetails_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(hdnField.Value))
+            try
             {
-                Utilities.Utilities.SetPageMessage("Please select the book first.", Utilities.Utilities.Severity.Error, Page.Master);
-                return;
-            }
 
-            Response.Redirect("Details.aspx?bookID=" + int.Parse(hdnField.Value));
+                if (String.IsNullOrWhiteSpace(hdnField.Value))
+                {
+                    Utilities.Instance.SetPageMessage("Please select the book first.", Utilities.Severity.Error, Page.Master);
+                    return;
+                }
+
+                Response.Redirect("Details.aspx?bookID=" + int.Parse(hdnField.Value));
+            }
+            catch (Exception ex)
+            {
+
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
+            }
         }
 
 
         private void DisplayBooks()
         {
-           
-
             try
             {
                 BusinessLogicDBOperations dbOp = new BusinessLogicDBOperations();
@@ -78,7 +96,10 @@ namespace BookCheckInAndOut
             }
             catch (Exception ex)
             {
-                Utilities.Utilities.SetPageMessage(ex.Message, Utilities.Utilities.Severity.Error, Page.Master);
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
+                btnCheckIn.Enabled = false;
+                btnCheckOut.Enabled = false;
+                btnDetails.Enabled = false;
                 return;
             }
         }

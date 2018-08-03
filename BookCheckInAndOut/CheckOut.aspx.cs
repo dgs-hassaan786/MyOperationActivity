@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using BookCheckInAndOut.Utilities;
-using BusinessLogic;
-using System.Data;
+﻿using BusinessLogic;
 using DBAccess;
+using Foundation.Shared.ConfigProvider;
+using Foundation.Shared.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Web.UI;
 
 namespace BookCheckInAndOut
 {
@@ -23,29 +20,16 @@ namespace BookCheckInAndOut
                 {
                     selectedBookID = int.Parse(Request.QueryString["bookID"]);
                     lblCheckOutDate.Text = DateTime.Now.ToString();
-                    lblReturnDate.Text = Utilities.Utilities.GetDateAfterSpecifiedBusinessDays(15).ToString();
+                    lblReturnDate.Text = Utilities.Instance.GetDateAfterSpecifiedBusinessDays(AppConfigurationManager.Instance.Keys.TotalAllowedDaysToReturnBook).ToString();
                     DisplayBookDetails(selectedBookID);
                     DisplayBookCheckOutHistory(selectedBookID);
                 }
                 else
                 {
-                    Utilities.Utilities.SetPageMessage("The resource which you are trying to access is not available.", Utilities.Utilities.Severity.Error, Page.Master);
+                    Utilities.Instance.SetPageMessage("The resource which you are trying to access is not available.", Utilities.Severity.Error, Page.Master);
                     return;
                 }
             }
-        }
-
-        /// <summary>
-        /// This function is responsible for populating the book history grid.
-        /// </summary>
-        /// <param name="bookID">Book ID</param>
-        private void DisplayBookCheckOutHistory(int bookID)
-        {
-            BusinessLogicDBOperations dbOperations = new BusinessLogicDBOperations();
-            List<Borrower> borrowers = dbOperations.RetrieveBookCheckOutHistory(bookID);
-
-            HistoryList.DataSource = borrowers;
-            HistoryList.DataBind();
         }
 
         private void DisplayBookDetails(int bookId)
@@ -58,7 +42,7 @@ namespace BookCheckInAndOut
             }
             catch (Exception ex)
             {
-                Utilities.Utilities.SetPageMessage(ex.Message, Utilities.Utilities.Severity.Error, Page.Master);
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
                 return;
             }
         }
@@ -70,6 +54,7 @@ namespace BookCheckInAndOut
         /// <param name="e"></param>
         protected void BtnCheckOut_Click(object sender, EventArgs e)
         {
+            btnCheckOut.Enabled = false;
             int selectedBookID = 0;
             if (!String.IsNullOrWhiteSpace(Request.QueryString["bookID"]))
             {
@@ -85,13 +70,13 @@ namespace BookCheckInAndOut
                 DateTime dt;
                 try
                 {
-                    dt = hdnField.Value.FromJson<DateTime>();
 
+                    dt = hdnField.Value.FromJson<DateTime>();
                 }
                 catch (Exception)
                 {
 
-                    Utilities.Utilities.SetPageMessage("Either the book is not available or already checked out. Please try to refresh again", Utilities.Utilities.Severity.Error, Page.Master);
+                    Utilities.Instance.SetPageMessage("Either the book is not available or already checked out. Please try to refresh again", Utilities.Severity.Error, Page.Master);
                     return;
                 }
 
@@ -103,29 +88,53 @@ namespace BookCheckInAndOut
                      returnDate,
                      dt
                      );
-                if (result == 0)
+                switch (result)
                 {
-                    Utilities.Utilities.SetPageMessage("There was an error occured. Request can not be fulfil at the current movement.", Utilities.Utilities.Severity.Error, Page.Master);
-                    return;
+                    case 0:
+                        {
+                            Utilities.Instance.SetPageMessage("There was an error occured. Request can not be fulfil at the current movement.", Utilities.Severity.Error, Page.Master);
+                            return;
+                        }
+                    case 404:
+                        {
+                            Utilities.Instance.SetPageMessage("Either the book is not available or already checked out", Utilities.Severity.Error, Page.Master);
+                            return;
+                        }
+                    default:
+                        {
+                            Utilities.Instance.SetPageMessage("Book has been checked out in the name of " + txtName.Text, Utilities.Severity.Info, Page.Master);
+                            DisplayBookCheckOutHistory(selectedBookID);
+                            break;
+                        }
                 }
-
-                if (result == 404)
-                {
-                    Utilities.Utilities.SetPageMessage("Either the book is not available or already checked out", Utilities.Utilities.Severity.Error, Page.Master);
-                    return;
-                }
-
-                btnCheckOut.Enabled = false;
-
-                Utilities.Utilities.SetPageMessage("Book has been checked out in the name of " + txtName.Text, Utilities.Utilities.Severity.Info, Page.Master);
-
-                DisplayBookCheckOutHistory(selectedBookID);
             }
             else
             {
-                Utilities.Utilities.SetPageMessage("Please select a book.", Utilities.Utilities.Severity.Error, Page.Master);
-                return;
+                Utilities.Instance.SetPageMessage("The resource you are trying to access is not available", Utilities.Severity.Error, Page.Master);
             }
+        }
+
+
+        /// <summary>
+        /// This function is responsible for populating the book history grid.
+        /// </summary>
+        /// <param name="bookId">Book ID</param>
+        private void DisplayBookCheckOutHistory(int bookId)
+        {
+            try
+            {
+                BusinessLogicDBOperations dbOperations = new BusinessLogicDBOperations();
+                List<Borrower> borrowers = dbOperations.RetrieveBookCheckOutHistory(bookId);
+
+                HistoryList.DataSource = borrowers;
+                HistoryList.DataBind();
+            }
+            catch (Exception ex)
+            {
+
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
+            }
+
         }
 
     }

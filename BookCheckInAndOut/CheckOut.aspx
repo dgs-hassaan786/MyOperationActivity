@@ -47,8 +47,8 @@
         <tr>
             <td class="text2">Name:</td>
             <td class="auto-style2">
-                <asp:TextBox CssClass="textbox" ID="txtName" runat="server" />
-                <asp:RequiredFieldValidator ID="RFDtxtName" CssClass="Errortext" ControlToValidate="txtName" runat="server" ErrorMessage="Name is a required field"></asp:RequiredFieldValidator>
+                <asp:TextBox CssClass="textbox" ID="txtName" runat="server" MaxLength="50" />
+                <asp:RequiredFieldValidator ID="RFDtxtName" CssClass="Errortext" ControlToValidate="txtName" runat="server" ErrorMessage="Name is a required field"></asp:RequiredFieldValidator>                
             </td>
         </tr>
 

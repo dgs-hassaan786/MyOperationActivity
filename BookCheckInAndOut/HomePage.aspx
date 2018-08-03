@@ -116,12 +116,12 @@
             //enabling /disabling buttons on the basis of checkin /checkout
 
             if (rb.parentNode.parentNode.cells[6].innerHTML.trim().toLowerCase() == 'check in') {
-                getElementById('btnCheckIn').disabled = false;
-                getElementById('btnCheckOut').disabled = true;
+                getElementById('btnCheckIn').disabled = true;
+                getElementById('btnCheckOut').disabled = false;
             }
             else if (rb.parentNode.parentNode.cells[6].innerHTML.trim().toLowerCase() == 'check out') {
-                getElementById('btnCheckOut').disabled = false;
-                getElementById('btnCheckIn').disabled = true;
+                getElementById('btnCheckOut').disabled = true;
+                getElementById('btnCheckIn').disabled = false;
             }
 
             getElementById('btnDetails').disabled = false;

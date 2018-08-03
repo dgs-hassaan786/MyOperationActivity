@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using Foundation.Shared.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -60,10 +61,20 @@ namespace BookCheckInAndOut
                 lblPrice.Text = book.CoverPrice.ToString("0.##", CultureInfo.InvariantCulture);
                 lblPublishYear.Text = book.PublishYear;
                 lblStatus.Text = book.CheckOutStatusDescription;
+
+                if (lblStatus.Text == "Check out")
+                {
+                    Borrower borrower = dbOp.RetrieveBookBorrowerDetails(bookId);
+                    lblCurrentBorrower.Text = borrower.Name;
+                }
+                else
+                {
+                    lblCurrentBorrower.Text = "None";
+                }
             }
             catch (Exception ex)
             {
-                Utilities.Utilities.SetPageMessage(ex.Message, Utilities.Utilities.Severity.Error, Page.Master);
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
                 return;
             }
 

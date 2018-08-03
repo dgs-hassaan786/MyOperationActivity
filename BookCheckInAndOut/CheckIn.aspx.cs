@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using BusinessLogic;
 using System.Data;
 using DBAccess;
+using Foundation.Shared.Utilities;
 
 namespace BookCheckInAndOut
 {
@@ -24,59 +25,17 @@ namespace BookCheckInAndOut
                 }
                 else
                 {
-                    Utilities.Utilities.SetPageMessage("The resource which you are trying to access is not available.", Utilities.Utilities.Severity.Error, Page.Master);
+                    btnCheckIn.Enabled = false;
+                    Utilities.Instance.SetPageMessage("The resource which you are trying to access is not available.", Utilities.Severity.Error, Page.Master);
                     return;
                 }
             }
 
         }
-
-        private void DisplayBorrowerDeails(int BookID)
-        {
-            BusinessLogicDBOperations dbOperations = new BusinessLogicDBOperations();
-            Borrower borrower = dbOperations.RetrieveBookBorrowerDetails(BookID);
-
-            if (borrower != null)
-            {
-                lblName.Text = borrower.Name;
-                lblMobile.Text = borrower.MobileNo;
-                lblReqReturnDate.Text = borrower.ReturnDate.ToString();
-                lblReturnDate.Text = DateTime.Now.ToString();
-                hdnField.Value = borrower.Book.ModifiedOn.ToJson();
-                double penaltyAmount = CalcultePenaltyAmount(DateTime.Now, borrower.ReturnDate);
-                lblPenaltyAmount.Text = String.Format("{0:#,##0.00}", penaltyAmount);
-
-            }
-            else
-            {
-                Utilities.Utilities.SetPageMessage("Book is either already checked in or was not found.", Utilities.Utilities.Severity.Error, Page.Master);
-                return;
-            }
-        }
-
-        private double CalcultePenaltyAmount(DateTime actualReturnDate, DateTime reqReturnedDate)
-        {
-            if (actualReturnDate <= reqReturnedDate)
-            {
-                return 0;
-            }
-            else
-            {
-                var penalty = 0;
-                for (var i = reqReturnedDate.AddDays(1); i <= actualReturnDate; i = i.AddDays(1))
-                {
-                    if (i.DayOfWeek != DayOfWeek.Friday && i.DayOfWeek != DayOfWeek.Saturday)
-                    {
-                        penalty += 5;
-                    }
-                }
-
-                return penalty;
-            }
-        }
-
+        
         protected void BtnCheckIn_Click(object sender, EventArgs e)
         {
+            btnCheckIn.Enabled = false;
             BusinessLogicDBOperations dbOperations = new BusinessLogicDBOperations();
 
             int selectedBookID = 0;
@@ -94,30 +53,67 @@ namespace BookCheckInAndOut
                 catch (Exception)
                 {
 
-                    Utilities.Utilities.SetPageMessage("Either the book is not available or already checked out. Please try to refresh again", Utilities.Utilities.Severity.Error, Page.Master);
+                    Utilities.Instance.SetPageMessage("Either the book is not available or already checked out. Please try to refresh again", Utilities.Severity.Error, Page.Master);
                     return;
                 }
 
                 int result = dbOperations.CheckIn(selectedBookID, dt);
-                if (result == 0)
+                switch (result)
                 {
-                    Utilities.Utilities.SetPageMessage("There was an error occured. Request can not be fulfil at the current movement.", Utilities.Utilities.Severity.Error, Page.Master);
-                    return;
+                    case 0:
+                        {
+                            Utilities.Instance.SetPageMessage("There was an error occured. Request can not be fulfil at the current movement.", Utilities.Severity.Error, Page.Master);
+                            return;
+                        }
+                    case 404:
+                        {
+                            Utilities.Instance.SetPageMessage("Either the book is already checked in or was not found.", Utilities.Severity.Error, Page.Master);
+                            return;
+                        }
+                    default:
+                        Utilities.Instance.SetPageMessage("Book has been checked in successfully.", Utilities.Severity.Info, Page.Master);
+                        break;
                 }
-                if (result == 404)
-                {
-                    Utilities.Utilities.SetPageMessage("Either the book is already checked in or was not found.", Utilities.Utilities.Severity.Error, Page.Master);
-                    return;
-                }
-
-                Utilities.Utilities.SetPageMessage("Book has been checked in successfully.", Utilities.Utilities.Severity.Info, Page.Master);
-                btnCheckIn.Enabled = false;
             }
             else
             {
-                Utilities.Utilities.SetPageMessage("Book is either already checked in or was not found.", Utilities.Utilities.Severity.Error, Page.Master);
-                return;
+                Utilities.Instance.SetPageMessage("The resource which you are trying to access is not available.", Utilities.Severity.Error, Page.Master);                
             }
+        }
+
+        private void DisplayBorrowerDeails(int bookId)
+        {
+            try
+            {
+
+                BusinessLogicDBOperations dbOperations = new BusinessLogicDBOperations();
+                Borrower borrower = dbOperations.RetrieveBookBorrowerDetails(bookId);
+
+                if (borrower != null)
+                {
+                    lblName.Text = borrower.Name;
+                    lblMobile.Text = borrower.MobileNo;
+                    lblReqReturnDate.Text = borrower.ReturnDate.ToString();
+                    lblReturnDate.Text = DateTime.Now.ToString();
+                    hdnField.Value = borrower.Book.ModifiedOn.ToJson();
+                    double penaltyAmount = Utilities.Instance.CalcultePenaltyAmount(DateTime.Now, borrower.ReturnDate);
+                    lblPenaltyAmount.Text = String.Format("{0:#,##0.00}", penaltyAmount);
+
+                }
+                else
+                {
+                    btnCheckIn.Enabled = false;
+                    Utilities.Instance.SetPageMessage("Book is either already checked in or was not found.", Utilities.Severity.Error, Page.Master);
+                    return;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                btnCheckIn.Enabled = false;
+                Utilities.Instance.SetPageMessage(ex.Message, Utilities.Severity.Error, Page.Master);
+            }
+
         }
     }
 }
